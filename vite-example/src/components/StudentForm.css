@@ -1,0 +1,61 @@
+.student-form {
+    max-width: 650px;
+    width: 100%;
+    margin: auto;
+    border: 1px solid #000;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-control {
+    margin: 10px 0;
+}
+
+.actions-buttons button {
+    margin-right: 10px;
+}
+
+.actions-buttons button:first-child {
+    background: red;
+    color: #ffffff;
+    border: 1px solid black;
+    padding: 5px 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.actions-buttons button:last-child {
+    background: blue;
+    color: #ffffff;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in;
+}
+
+.actions-buttons button:last-child:hover {
+    box-shadow: 0 0 10px black
+}
+
+label {
+    display: block;
+}
+
+.success {
+    color: green;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.loading {
+    color: blue;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.error {
+    color: red;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
