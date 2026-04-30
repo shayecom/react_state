@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import StudentForm from "./StudentForm.jsx";
 
-function NewStudent({onAddStudent}) {
+function NewStudent(props) {
     const [studentData, setStudentData] = useState({});
 
     const saveRegisteredStudentDataHandler = (studentData) => {
@@ -13,12 +13,13 @@ function NewStudent({onAddStudent}) {
             id: Math.random().toString(),
             ...studentData
         }
-        onAddStudent(newStudentData);
+        props.onAddStudent(newStudentData);
     }
     return (
         <>
             <StudentForm saveRegisteredStudentDataHandler={saveRegisteredStudentDataHandler}
                          onSaveStudentHandler={saveStudentHandler}
+                         courses={props.courses}
             />
         </>
     )

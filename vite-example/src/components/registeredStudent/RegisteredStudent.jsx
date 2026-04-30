@@ -5,15 +5,16 @@ import './RegisteredStudents.css';
 function RegisteredStudent({data}) {
 
     return (
-        <div className={"wrapper"}>
+        <div>
             {
                 data.map((student) => (
-                    <div key={student.id} className={'student-list'}>
-                        <h2>Student name: {student.name}</h2>
-                        <div className={"registration-student_course"}>
-                            <p>Course Name: {student.course}</p>
-                            <p>Start date: {student.startDate}</p>
+                    <div key={student.id}
+                         className={'row align-items-center bg-secondary bg-opacity-50 border border-5 border-dark mb-3'}>
+                        <div className={'col-md-2 fw-bold border-end border-dark'}>
+                            {student.startDate}
                         </div>
+                        <div className={'col-md-7 fw-bold fs-5'}>{student.name}</div>
+                        <div className={'col-md-3 fw-bold text-end'}>{student.course}</div>
                     </div>
                 ))
             }
