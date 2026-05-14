@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import MainTable from "./Table/MainTable.jsx";
-import {axiosInstance as axios} from "../services/axiosInstance.js";
+import {apiRequest, axiosInstance as axios} from "../services/axiosInstance.js";
 
 function FetchExample() {
     // State
@@ -10,21 +10,30 @@ function FetchExample() {
     const [error, setError] = useState(null);
     const [postId, setPostId] = useState(1);
     const [count, setCount] = useState(0);
+
     // Side Effects
     useEffect(() => {
+        // (async () => {
+        //     await fetchData();
+        // })();
         // awaitResponse()
         // fetchWithAxios();
         fetchPosts()
     }, [postId]);
 
-    // useEffect(() => {
-    //     console.log(count);
-    // }, [count])
+    useEffect(() => {
+        console.log(count);
+    }, [count])
 
     // Functions
     const fetchPosts = async () => {
         try {
-            const response = await axios.get("https://jsonplaceholder.typicode.com/posts")
+            const courses = await apiRequest(
+                {method: 'GET', path: "/course/all"}
+            )
+            debugger;
+            const response =
+                await axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}`)
             if (response.data.length === 0) {
                 throw new Error("No data found");
             }
@@ -93,24 +102,33 @@ function FetchExample() {
         }
     }
 
-    // const handleSetCount = () => {
-    //     setCount(count + 1);
-    // }
+    const handleSetCount = () => {
+        setCount(count + 1);
+    }
     const handlePostId = (event) => {
         setPostId(event.target.value);
     }
     // Render
     return (
         <div className={'row'}>
+            {/*<div className="col">*/}
+            {/*    <button onClick={handleSetCount}>Click me</button>*/}
+            {/*    <p>{count}</p>*/}
+            {/*</div>*/}
             <div className={'col'}>
                 {
-                    postData.length > 0 ?
-                        postData.map((post) => (
-                            <div key={post.id}>
-                                <h2>{post.title}</h2>
-                                <p>{post.body}</p>
-                            </div>
-                        )) : <p>{error}</p>
+                    typeof postData === "object" ?
+                        <div key={postData.id}>
+                            <h2>{postData.title}</h2>
+                            <p>{postData.body}</p>
+                        </div> :
+                        postData.length > 0 ?
+                            postData.map((post) => (
+                                <div key={post.id}>
+                                    <h2>{post.title}</h2>
+                                    <p>{post.body}</p>
+                                </div>
+                            )) : <p>{error}</p>
                 }
             </div>
             <select onChange={handlePostId}>

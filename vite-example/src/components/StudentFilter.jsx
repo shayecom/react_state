@@ -17,7 +17,7 @@ function StudentFilter(props) {
                         <option value={'All'}>All</option>
                         {
                             props.courses.map((course) => (
-                                <option key={course} value={course}>{course}</option>
+                                <option key={course.id} value={course.id}>{course.name}</option>
                             ))
                         }
                     </select>
@@ -31,10 +31,10 @@ function StudentFilter(props) {
                     <select className={'form-select text-center fw-bold'} onChange={amountFilterHandler}
                             value={props.selectedAmount}>
                         <option value={'All'}>All</option>
-                        <option value={'No Registration'}>No Registration</option>
-                        <option value={'1 - 10 Registration'}>1 -10 Registration</option>
-                        <option value={'10 - 30 Registration'}>10 -30 Registration</option>
-                        <option value={'Above 30 Registrations'}>Above 30 Registrations</option>
+                        <option value={0}>No Registration</option>
+                        <option value={1}>1 - 10 Registration</option>
+                        <option value={2}>10 - 30 Registration</option>
+                        <option value={3}>Above 30 Registrations</option>
                     </select>
                 </div>
             </div>

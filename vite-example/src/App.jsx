@@ -1,27 +1,50 @@
 import './App.css'
 import NewStudent from "./components/NewStudent.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import RegisteredStudent from "./components/registeredStudent/RegisteredStudent.jsx";
 import StudentChart from "./components/StudentChart.jsx";
 import StudentFilter from "./components/StudentFilter.jsx";
+import {apiRequest} from "./lib/axiosInstance.js";
 
-const courses = [
-    "Fullstack",
-    "QA",
-    "Cybersecurity",
-    "Product management",
-]
 
 function App() {
     const [registeredStudents, setRegisteredStudents] = useState([])
     const [selectedCourse, setSelectedCourse] = useState('All');
     const [selectedAmount, setSelectedAmount] = useState("All");
+    const [courses, setCourses] = useState([]);
 
-    const addStudentHandler = (student) => {
-        setRegisteredStudents((prevStudents) => [...prevStudents, student]);
+    useEffect(() => {
+        getCourses();
+        getStudents();
+    }, []);
+
+    const getCourses = async () => {
+        const response = await apiRequest({
+            method: 'GET',
+            path: '/course/all',
+        });
+        setCourses(response);
     }
-    const getCourseRegistrationAmount = (courseName) => {
-        return registeredStudents.filter((student) => student.course === courseName).length;
+
+    const getStudents = async () => {
+        const response = await apiRequest({
+            method: 'GET',
+            path: '/student/all',
+        });
+        setRegisteredStudents(response);
+    }
+
+    const addStudentHandler = async (student) => {
+        const response = await apiRequest({
+            method: 'POST',
+            path: '/student/create',
+            data: student
+        });
+        // console.log(response);
+        setRegisteredStudents((prevStudents) => [...prevStudents, response]);
+    }
+    const getCourseRegistrationAmount = (course) => {
+        return registeredStudents.filter((student) => student.course.id === course.id).length;
     }
     const onCourseChangeHandler = (value) => {
         setSelectedCourse(value);
@@ -30,21 +53,24 @@ function App() {
         setSelectedAmount(value);
     }
     const amountFilterMatch = (amount) => {
-        if (selectedAmount === 'No Registration') {
+        if (parseInt(selectedAmount) === 0) {
             return amount = 0;
         }
-        if (selectedAmount === '1 - 10 Registration') {
+        if (parseInt(selectedAmount) === 1) {
             return amount >= 1 && amount <= 10;
         }
-        if (selectedAmount === '10 - 30 Registration') {
+        if (parseInt(selectedAmount) === 2) {
             return amount >= 10 && amount <= 30;
+        }
+        if (parseInt(selectedAmount) === 3) {
+            return amount >= 30;
         }
         return true;
     }
     let filteredStudents = registeredStudents;
     if (selectedCourse !== 'All') {
         filteredStudents = filteredStudents.filter((student) => {
-            return student.course === selectedCourse;
+            return student.course.id === parseInt(selectedCourse);
         })
     }
     if (selectedAmount !== 'All') {

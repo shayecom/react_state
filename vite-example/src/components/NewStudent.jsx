@@ -9,11 +9,7 @@ function NewStudent(props) {
         setStudentData(studentData);
     }
     const saveStudentHandler = (studentData) => {
-        const newStudentData = {
-            id: Math.random().toString(),
-            ...studentData
-        }
-        props.onAddStudent(newStudentData);
+        props.onAddStudent(studentData);
     }
     return (
         <>
