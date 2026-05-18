@@ -7,8 +7,14 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 function RegistrationForm() {
     // const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState("");
+    const [validUsername, setValidUsername] = useState(false);
+
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [validPassword, setValidPassword] = useState(false);
+
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [validConfirmPassword, setValidConfirmPassword] = useState(false);
+
     // Use Ref example
     const userNameRef = useRef();
 
@@ -17,13 +23,27 @@ function RegistrationForm() {
     }, [])
 
     const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
-        if (!USR_REGEX.test(username)) {
-            setError("Username is invalid");
-        } else {
-            setError("");
-        }
+        const value = event.target.value;
+        setUsername(value);
+        setValidUsername(USR_REGEX.test(value));
     }
+
+    const handlePasswordChange = (event) => {
+        const password = event.target.value;
+        setPassword(password);
+        setValidPassword(PWD_REGEX.test(password));
+    }
+
+    const handleConfirmPassword = (event) => {
+        const confirmPassword = event.target.value;
+        setConfirmPassword(confirmPassword);
+        console.log("confirm password confirmPassword: ", confirmPassword);
+        console.log("password value: ", password);
+        setValidConfirmPassword(confirmPassword === password);
+    }
+
+    const isValidForm = validUsername && validPassword && validConfirmPassword;
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("Form submitted");
@@ -40,7 +60,8 @@ function RegistrationForm() {
                     <input ref={userNameRef} type="text" id="username"
                            className="form-control" autoComplete={"off"} value={username}
                            onChange={handleUsernameChange}/>
-                    {error && <p className="text-danger">{error}</p>}
+                    {username && !validUsername &&
+                        <p className="text-danger">Username must start with a letter and be 4-24 characters.</p>}
                 </div>
                 <div className="col-3">
                     {/*<button type={"button"} className="btn btn-secondary"*/}
@@ -51,16 +72,34 @@ function RegistrationForm() {
                     {/*       aria-describedby="passwordHelpBlock"/>*/}
                     <label htmlFor="inputPassword5" className="form-label">Password</label>
                     <input type="password" id="inputPassword5" className="form-control"
-                           aria-describedby="passwordHelpBlock" value={password}/>
-                    <div id="passwordHelpBlock" className="form-text">
-                        Your password must be 8-24 characters long, contain at least 1 uppercase,at least 1 lowercase,
-                        at least 1 special and numbers ,
-                        and must not contain
-                        spaces or emoji.
-                    </div>
+                           aria-describedby="passwordHelpBlock" value={password}
+                           onChange={handlePasswordChange}/>
+                    {
+                        password && !validPassword && (
+                            <p className={"error"}>
+                                Your password must be 8-24 characters long, contain at least 1 uppercase,at least 1
+                                lowercase,
+                                at least 1 special and numbers ,
+                                and must not contain
+                                spaces or emoji.
+                            </p>
+                        )
+                    }
+                    {/*<div id="passwordHelpBlock" className="form-text">*/}
+                    {/*    Your password must be 8-24 characters long, contain at least 1 uppercase,at least 1 lowercase,*/}
+                    {/*    at least 1 special and numbers ,*/}
+                    {/*    and must not contain*/}
+                    {/*    spaces or emoji.*/}
+                    {/*</div>*/}
+                </div>
+                <div className="col-3">
+                    <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" className="form-control"
+                           aria-describedby="passwordHelpBlock" value={confirmPassword}
+                           onChange={handleConfirmPassword}/>
                 </div>
                 <div className="col mt-3">
-                    <button type="submit" className="btn btn-primary">Sign Up</button>
+                    <button disabled={!isValidForm} type="submit" className="btn btn-primary">Sign Up</button>
                 </div>
             </form>
         </div>
