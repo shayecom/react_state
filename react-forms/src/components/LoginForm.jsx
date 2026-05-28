@@ -2,6 +2,7 @@ import {useState} from "react";
 import {apiRequest} from "../lib/axiosInstance.js";
 import {useNavigate} from "react-router";
 import {useAuth} from "../context/AuthProvider.jsx";
+import CustomLink from "./customLink/CustomLink.jsx";
 
 function LoginForm() {
     const useNav = useNavigate();
@@ -64,6 +65,7 @@ function LoginForm() {
                     <button disabled={!isValid} type="submit" className="btn btn-primary">Sign In</button>
                 </div>
             </form>
+            <CustomLink to={"/register"}>Don't have an account? Register</CustomLink>
         </div>
     )
 }

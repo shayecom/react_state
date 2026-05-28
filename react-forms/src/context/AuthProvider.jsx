@@ -19,22 +19,22 @@ function AuthProvider({children}) {
         if (!savedToken) {
             return;
         }
-        // const response = await apiRequest({
-        //     method: 'GET',
-        //     path: "/api/user/me",
-        //     headers: {
-        //         Content: "application/json",
-        //         Authorization: `Bearer ${savedToken}`
-        //     }
-        // });
-        // if (response.token) {
-        //     setToken(response.token);
-        //     setIsAuthenticated(true);
-        // } else {
-        //     setToken(null);
-        //     setIsAuthenticated(false);
-        //     useNav("/login");
-        // }
+        const response = await apiRequest({
+            method: 'GET',
+            path: "/api/user/me",
+            headers: {
+                Content: "application/json",
+                Authorization: `Bearer ${savedToken}`
+            }
+        });
+        if (response.token) {
+            setToken(response.token);
+            setIsAuthenticated(true);
+        } else {
+            setToken(null);
+            setIsAuthenticated(false);
+            useNav("/login");
+        }
 
     }
 

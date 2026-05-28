@@ -1,6 +1,7 @@
 import {useState, useEffect, useRef} from "react";
 import {apiRequest} from "../lib/axiosInstance.js";
 import {useNavigate} from "react-router";
+import CustomLink from "./customLink/CustomLink.jsx";
 
 
 const USR_REGEX = /^[A-z][A-z0-9-_]{3,23}$/
@@ -103,12 +104,6 @@ function RegistrationForm() {
                             </p>
                         )
                     }
-                    {/*<div id="passwordHelpBlock" className="form-text">*/}
-                    {/*    Your password must be 8-24 characters long, contain at least 1 uppercase,at least 1 lowercase,*/}
-                    {/*    at least 1 special and numbers ,*/}
-                    {/*    and must not contain*/}
-                    {/*    spaces or emoji.*/}
-                    {/*</div>*/}
                 </div>
                 <div className="col-3">
                     <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
@@ -120,6 +115,7 @@ function RegistrationForm() {
                     <button disabled={!isValidForm} type="submit" className="btn btn-primary">Sign Up</button>
                 </div>
             </form>
+            <CustomLink to={"/login"}>Already have an account? Login</CustomLink>
         </div>
     )
 }
