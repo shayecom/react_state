@@ -1,10 +1,13 @@
 import {useState, useEffect, useRef} from "react";
+import {apiRequest} from "../lib/axiosInstance.js";
+import {useNavigate} from "react-router";
 
 
 const USR_REGEX = /^[A-z][A-z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 function RegistrationForm() {
+    const useNav = useNavigate();
     // const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState("");
     const [validUsername, setValidUsername] = useState(false);
@@ -14,7 +17,7 @@ function RegistrationForm() {
 
     const [confirmPassword, setConfirmPassword] = useState("");
     const [validConfirmPassword, setValidConfirmPassword] = useState(false);
-
+    const [isLoading, setIsLoading] = useState(false);
     // Use Ref example
     const userNameRef = useRef();
 
@@ -44,15 +47,30 @@ function RegistrationForm() {
 
     const isValidForm = validUsername && validPassword && validConfirmPassword;
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setIsLoading(true);
         console.log("Form submitted");
-        if (!USR_REGEX.test(username)) {
-            console.log("Username is invalid");
+        try {
+            const response = await apiRequest({
+                method: 'POST',
+                path: '/api/public/user/save',
+                data: {
+                    username: username,
+                    password: password,
+                }
+            })
+            console.log(response);
+            useNav('/login');
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     }
     return (
         <div className={'container'}>
+            {isLoading && <p>Loading...</p>}
             <h4>Registration Form</h4>
             <form onSubmit={handleSubmit}>
                 <div className="col-3">

@@ -28,9 +28,3 @@ export const apiRequest = async ({
     }
 
 }
-// export const axiosConfig = {
-//     baseURL: url.toString(),
-// }
-//
-// axios.defaults.withCredentials = false;
-// export const axiosInstance = axios.create(axiosConfig);
